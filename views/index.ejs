@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MY APP</title>
+</head>
+
+<body>
+    <h1>Add new advisor </h1>
+    <form action="/advisors" method="POST">
+        <input type="text" placeholder="name" name="name">
+        <input type="text" placeholder="email" name="email">
+        <button type="submit">Submit</button>
+    </form>
+
+    <section data-position="update-quote">
+        <div>
+            <h2>Update Advisor</h2>
+            <button id="update-button">Update Advisor</button>
+        </div>
+    </section>
+
+    <section data-position="delete-advisor">
+        <div>
+            <h2>Remove Advisor</h2>
+            <p>
+                Delete Advisor </p>
+            <button id="delete-button">Delete Advisor</button>
+        </div>
+        <div id="message"></div>
+    </section>
+
+    <section data-position="advisors">
+        <h2> Advisors </h2>
+
+        <ul class="advisors">
+            <!-- Loop through advisors -->
+            <% for(var i = 0; i < advisors.length; i++) {%>
+                <li class="advisor">
+                    <span><%= advisors[i].name %></span>:
+                    <span><%= advisors[i].email %></span>
+                </li>
+                <%} %>
+        </ul>
+    </section>
+    <section>
+        <input type="file" id="uploadfile" onChange="readImage(this)">
+    </section>
+    <script src="/import.js"></script>
+    <script src="/main.js"></script>
+</body>
+
+</html>
