@@ -1,18 +1,9 @@
-import express from "express";
-import { createReadStream } from "fs";
-import { parse } from "fast-csv";
-import { MongoClient } from "mongodb";
-const app = express()
-const connectionString = "mongodb+srv://davidmcneal28:SL256Tnp@cluster0.xnty7.mongodb.net/advisorCRM?retryWrites=true&w=majority";
+const fast_csv = require('fast_csv')
+const fs = require('fs')
 
-MongoClient.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true, })
-    .then((client) => {
-        const db = client.db("advisorCRM")
-        const advisors = db.collection("advisors")
-        app.set('view engine', 'ejs')
-        app.use(express.static('public'))
-        const process = async(rowLimit, batchSize) => {
-            const readStream = createReadStream('advisors.csv')
+if (input.files) {
+    function readImage(input) {
+        if (input.files) {
             let lineNumber = 0
             let batch = []
             let batchId = 0
@@ -25,12 +16,12 @@ MongoClient.connect(connectionString, { useNewUrlParser: true, useUnifiedTopolog
                     batch.push(row);
                     lineNumber++;
                     // if batch full insert to database
-                    if (batch.length >= batchSize) {
-                        // do not await the insert, let it work in the background
-                        advisors.insertMany(batch, batchId);
-                        batch = [];
-                        batchId++;
-                    }
+
+                    // do not await the insert, let it work in the background
+                    advisors.insertMany(batch, batchId);
+                    batch = [];
+                    batchId++;
+
                     // grab for n rows of large file.
                     if (lineNumber >= rowLimit) {
                         readStream.pause();
@@ -66,8 +57,7 @@ MongoClient.connect(connectionString, { useNewUrlParser: true, useUnifiedTopolog
                     // check if anything is left over (odd lots) in batch
                     console.log(`left in batch: ${batch.length}`);
                     if (batch.length) doWork(batch, batchId);
-                });
+                })
         }
-
         process(4, 4)
-    });
+    }

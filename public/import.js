@@ -4,8 +4,7 @@ var obj_csv = {
 };
 
 function readImage(input) {
-    console.log(input)
-    if (input.files && input.files[0]) {
+    if (input.files) {
         let reader = new FileReader();
         reader.readAsBinaryString(input.files[0]);
         reader.onload = function(e) {
@@ -14,7 +13,6 @@ function readImage(input) {
             obj_csv.dataFile = e.target.result
             console.log(obj_csv.dataFile)
             parseData(obj_csv.dataFile)
-
         }
     }
 }
